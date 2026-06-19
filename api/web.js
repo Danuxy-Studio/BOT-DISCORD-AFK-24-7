@@ -8,6 +8,8 @@ router.get('/', async (req, res) => {
   try {
     const status = getStatus();
     
+    console.log('📊 Status saat render:', status);
+    
     res.render('index', {
       title: 'Discord Bot Dashboard',
       status: status,
@@ -30,6 +32,7 @@ router.get('/', async (req, res) => {
 router.get('/api/status', (req, res) => {
   try {
     const status = getStatus();
+    console.log('📊 API Status:', status);
     res.json({
       success: true,
       data: {
@@ -40,6 +43,7 @@ router.get('/api/status', (req, res) => {
       }
     });
   } catch (error) {
+    console.error('API Status error:', error);
     res.status(500).json({
       success: false,
       error: error.message
@@ -50,13 +54,16 @@ router.get('/api/status', (req, res) => {
 // API endpoint untuk reconnect
 router.post('/api/reconnect', async (req, res) => {
   try {
-    await reconnectBot();
+    console.log('🔄 Reconnect requested');
+    const success = await reconnectBot();
+    const status = getStatus();
     res.json({
-      success: true,
-      message: 'Reconnect berhasil',
-      status: getStatus()
+      success: success,
+      message: success ? 'Reconnect berhasil' : 'Reconnect gagal',
+      status: status
     });
   } catch (error) {
+    console.error('Reconnect error:', error);
     res.status(500).json({
       success: false,
       error: error.message
@@ -67,18 +74,69 @@ router.post('/api/reconnect', async (req, res) => {
 // API endpoint untuk restart bot
 router.post('/api/restart', async (req, res) => {
   try {
+    console.log('🔄 Restart requested');
     await initBot();
+    const status = getStatus();
     res.json({
       success: true,
       message: 'Restart berhasil',
-      status: getStatus()
+      status: status
     });
+  } catch (error) {
+    console.error('Restart error:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// API endpoint untuk leave voice channel
+router.post('/api/leave', async (req, res) => {
+  try {
+    const { connection } = require('../utils/discord');
+    const conn = connection();
+    
+    if (conn) {
+      try {
+        conn.destroy();
+        res.json({
+          success: true,
+          message: 'Berhasil keluar dari voice channel'
+        });
+      } catch (error) {
+        res.status(500).json({
+          success: false,
+          error: error.message
+        });
+      }
+    } else {
+      res.json({
+        success: false,
+        message: 'Bot tidak ada di voice channel'
+      });
+    }
   } catch (error) {
     res.status(500).json({
       success: false,
       error: error.message
     });
   }
+});
+
+// Debug endpoint
+router.get('/api/debug', (req, res) => {
+  const status = getStatus();
+  res.json({
+    success: true,
+    data: status,
+    raw: {
+      isConnected: status.isConnected,
+      clientReady: status.clientReady,
+      connectionExists: status.connectionExists,
+      connectionStatus: status.connectionStatus
+    }
+  });
 });
 
 module.exports = router;

@@ -7,7 +7,7 @@ const webRoutes = require('./web');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Setup view engine di sini (bukan di router)
+// Setup view engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '../views'));
 
@@ -23,8 +23,10 @@ app.use('/', webRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {
+  const status = getStatus();
   res.json({
     status: 'ok',
+    botStatus: status,
     timestamp: new Date().toISOString()
   });
 });
@@ -38,6 +40,19 @@ app.listen(PORT, async () => {
   try {
     await initBot();
     console.log('🤖 Bot initialized');
+    
+    // Cek status setelah init dengan interval
+    let checkCount = 0;
+    const checkInterval = setInterval(() => {
+      const status = getStatus();
+      console.log(`📊 Check ${checkCount + 1}:`, status);
+      checkCount++;
+      
+      if (status.isConnected || checkCount >= 10) {
+        clearInterval(checkInterval);
+        console.log('📊 Status monitoring selesai');
+      }
+    }, 2000);
   } catch (error) {
     console.error('❌ Bot init error:', error);
   }

@@ -272,6 +272,16 @@ header {
     color: #fff;
 }
 
+/* Tambahkan di public/style.css setelah .btn-info */
+
+.btn-danger {
+    background: linear-gradient(135deg, #ed4245, #c0353a);
+}
+
+.btn-danger:hover {
+    background: linear-gradient(135deg, #c0353a, #a02a2e);
+}
+
 /* Logs */
 .log-card .card-body {
     max-height: 300px;
