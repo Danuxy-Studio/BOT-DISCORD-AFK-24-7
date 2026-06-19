@@ -18,7 +18,8 @@ function createSilentStream() {
   });
 }
 
-async function joinVoiceChannel(guildId, voiceChannelId) {
+// Ganti nama fungsi jadi connectToVoiceChannel (tidak conflict)
+async function connectToVoiceChannel(guildId, voiceChannelId) {
   try {
     const guild = client.guilds.cache.get(guildId);
     if (!guild) {
@@ -106,7 +107,7 @@ async function initBot() {
       const voiceChannelId = process.env.VOICE_CHANNEL_ID;
       
       if (guildId && voiceChannelId) {
-        await joinVoiceChannel(guildId, voiceChannelId);
+        await connectToVoiceChannel(guildId, voiceChannelId);
       }
       
       resolve(true);
@@ -143,7 +144,7 @@ async function reconnectBot() {
     const voiceChannelId = process.env.VOICE_CHANNEL_ID;
     
     if (guildId && voiceChannelId) {
-      return await joinVoiceChannel(guildId, voiceChannelId);
+      return await connectToVoiceChannel(guildId, voiceChannelId);
     }
   }
   

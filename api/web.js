@@ -1,22 +1,13 @@
 const express = require('express');
-const path = require('path');
 const { getStatus, reconnectBot, initBot } = require('../utils/discord');
 
 const router = express.Router();
-
-// Set view engine
-router.set('view engine', 'ejs');
-router.set('views', path.join(__dirname, '../views'));
-
-// Serve static files
-router.use(express.static(path.join(__dirname, '../public')));
 
 // Halaman utama
 router.get('/', async (req, res) => {
   try {
     const status = getStatus();
     
-    // Render halaman dengan data status
     res.render('index', {
       title: 'Discord Bot Dashboard',
       status: status,

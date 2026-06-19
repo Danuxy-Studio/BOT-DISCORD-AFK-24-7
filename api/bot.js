@@ -7,9 +7,16 @@ const webRoutes = require('./web');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Setup view engine di sini (bukan di router)
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, '../views'));
+
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Serve static files
+app.use(express.static(path.join(__dirname, '../public')));
 
 // Routes
 app.use('/', webRoutes);
