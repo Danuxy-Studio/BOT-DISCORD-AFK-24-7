@@ -21,7 +21,7 @@
             </div>
         </header>
 
-        <!-- Bot Status Card -->
+        <!-- Bot Status -->
         <div class="card status-card">
             <div class="card-header">
                 <h2><i class="fas fa-circle"></i> Status Bot</h2>
@@ -50,41 +50,10 @@
                         </span>
                     </div>
                 </div>
-                
-                <!-- Debug Info -->
-                <div style="margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 8px; font-size: 0.85rem;">
-                    <p><strong>🔍 Debug Info:</strong></p>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px;">
-                        <div>
-                            <span style="color: #999;">Connection Status:</span>
-                            <code style="display: block; margin-top: 2px; background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px;">
-                                <%= status.connectionStatus || 'none' %>
-                            </code>
-                        </div>
-                        <div>
-                            <span style="color: #999;">Connection Exists:</span>
-                            <code style="display: block; margin-top: 2px; background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px;">
-                                <%= status.connectionExists %>
-                            </code>
-                        </div>
-                        <div>
-                            <span style="color: #999;">Client Ready:</span>
-                            <code style="display: block; margin-top: 2px; background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px;">
-                                <%= status.clientReady %>
-                            </code>
-                        </div>
-                        <div>
-                            <span style="color: #999;">Last Update:</span>
-                            <code style="display: block; margin-top: 2px; background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px;">
-                                <%= timestamp %>
-                            </code>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 
-        <!-- Voice Channel Status -->
+        <!-- Voice Channel -->
         <div class="card voice-card">
             <div class="card-header">
                 <h2><i class="fas fa-headset"></i> Voice Channel</h2>
@@ -104,7 +73,7 @@
                                 '🔇 Bot tidak berada di voice channel' %>
                         </p>
                         <p class="channel-info" style="margin-top: 8px;">
-                            Channel ID: <code style="background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px; color: #5865f2;"><%= voiceChannelId %></code>
+                            Channel ID: <code><%= voiceChannelId %></code>
                         </p>
                         <p class="channel-info" style="margin-top: 4px; font-size: 0.85rem; color: #666;">
                             Status: <span style="color: <%= status.isConnected ? '#57f287' : '#ed4245' %>; font-weight: 600;">
@@ -130,85 +99,75 @@
                         <i class="fas fa-power-off"></i> Restart Bot
                     </button>
                     <button id="btn-refresh" class="btn btn-info" onclick="refreshStatus()">
-                        <i class="fas fa-refresh"></i> Refresh Status
+                        <i class="fas fa-refresh"></i> Refresh
                     </button>
-                    <button id="btn-leave" class="btn btn-danger" onclick="leaveVoice()" style="background: linear-gradient(135deg, #ed4245, #c0353a);">
+                    <button id="btn-leave" class="btn btn-danger" onclick="leaveVoice()">
                         <i class="fas fa-sign-out-alt"></i> Leave Voice
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Log Aktivitas -->
+        <!-- Logs -->
         <div class="card log-card">
             <div class="card-header">
-                <h2><i class="fas fa-history"></i> Aktivitas Terakhir</h2>
-                <div style="display: flex; gap: 10px; align-items: center;">
-                    <span style="font-size: 0.75rem; color: #666;" id="log-count">0 logs</span>
-                    <button onclick="clearLogs()" class="btn-small">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
+                <h2><i class="fas fa-history"></i> Aktivitas</h2>
+                <button onclick="clearLogs()" class="btn-small">
+                    <i class="fas fa-trash"></i> Clear
+                </button>
             </div>
             <div class="card-body">
                 <div id="log-container">
                     <div class="log-item">
                         <span class="log-time"><%= timestamp %></span>
-                        <span class="log-message">🚀 Bot dashboard dimulai</span>
+                        <span class="log-message">🚀 Dashboard dimulai</span>
                     </div>
                     <div class="log-item">
                         <span class="log-time"><%= timestamp %></span>
-                        <span class="log-message">📡 Status: <%= status.isConnected ? 'Terhubung ke voice channel' : 'Tidak terhubung ke voice channel' %></span>
-                    </div>
-                    <div class="log-item">
-                        <span class="log-time"><%= timestamp %></span>
-                        <span class="log-message">🔍 Connection Status: <%= status.connectionStatus || 'none' %></span>
+                        <span class="log-message">📡 Status: <%= status.isConnected ? 'Terhubung' : 'Tidak terhubung' %></span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Command List -->
+        <!-- Commands -->
         <div class="card command-card">
             <div class="card-header">
                 <h2><i class="fas fa-terminal"></i> Commands</h2>
             </div>
             <div class="card-body">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 0.9rem;">
-                    <div style="background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px;">
-                        <code style="color: #5865f2; font-weight: 600;">!status</code>
-                        <p style="color: #999; margin-top: 4px; font-size: 0.8rem;">Cek status bot</p>
+                <div class="command-grid">
+                    <div class="command-item">
+                        <code>!status</code>
+                        <span>Cek status bot</span>
                     </div>
-                    <div style="background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px;">
-                        <code style="color: #5865f2; font-weight: 600;">!join</code>
-                        <p style="color: #999; margin-top: 4px; font-size: 0.8rem;">Join voice channel</p>
+                    <div class="command-item">
+                        <code>!join</code>
+                        <span>Join voice channel</span>
                     </div>
-                    <div style="background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px;">
-                        <code style="color: #5865f2; font-weight: 600;">!leave</code>
-                        <p style="color: #999; margin-top: 4px; font-size: 0.8rem;">Keluar dari voice channel</p>
+                    <div class="command-item">
+                        <code>!leave</code>
+                        <span>Keluar dari voice</span>
                     </div>
-                    <div style="background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px;">
-                        <code style="color: #5865f2; font-weight: 600;">!help</code>
-                        <p style="color: #999; margin-top: 4px; font-size: 0.8rem;">Tampilkan semua commands</p>
+                    <div class="command-item">
+                        <code>!help</code>
+                        <span>Bantuan commands</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Footer -->
         <footer>
             <p>Made with <i class="fas fa-heart" style="color: #ff6b6b;"></i> for Discord</p>
-            <p class="version">v1.0.0</p>
+            <p class="version">v2.0.0</p>
         </footer>
     </div>
 
-    <!-- Toast Notification -->
     <div id="toast" class="toast"></div>
 
     <script>
         let logCount = 0;
 
-        // Fungsi untuk menambah log
         function addLog(message, type = 'info') {
             const container = document.getElementById('log-container');
             const time = new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' });
@@ -219,29 +178,20 @@
                 <span class="log-message">${message}</span>
             `;
             container.prepend(logItem);
-            
             logCount++;
-            document.getElementById('log-count').textContent = `${logCount} logs`;
-            
-            // Batasi log
             if (container.children.length > 50) {
                 container.removeChild(container.lastChild);
             }
         }
 
-        // Toast notification
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toast');
             toast.textContent = message;
             toast.className = `toast toast-${type}`;
             toast.style.display = 'block';
-            
-            setTimeout(() => {
-                toast.style.display = 'none';
-            }, 3000);
+            setTimeout(() => { toast.style.display = 'none'; }, 3000);
         }
 
-        // Reconnect bot
         async function reconnectBot() {
             const btn = document.getElementById('btn-reconnect');
             btn.disabled = true;
@@ -249,141 +199,100 @@
             addLog('🔄 Memulai reconnect...', 'info');
             
             try {
-                const response = await fetch('/api/reconnect', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' }
-                });
+                const response = await fetch('/api/reconnect', { method: 'POST' });
                 const data = await response.json();
-                
                 if (data.success) {
                     showToast('✅ Reconnect berhasil!', 'success');
                     addLog('✅ Reconnect berhasil', 'success');
                     setTimeout(refreshStatus, 1500);
                 } else {
-                    showToast('❌ Reconnect gagal: ' + (data.error || 'Unknown error'), 'error');
-                    addLog('❌ Reconnect gagal: ' + (data.error || 'Unknown error'), 'error');
+                    showToast('❌ Reconnect gagal', 'error');
+                    addLog('❌ Reconnect gagal', 'error');
                 }
             } catch (error) {
                 showToast('❌ Error: ' + error.message, 'error');
-                addLog('❌ Error reconnect: ' + error.message, 'error');
+                addLog('❌ Error: ' + error.message, 'error');
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = '<i class="fas fa-sync"></i> Reconnect';
             }
         }
 
-        // Restart bot
         async function restartBot() {
             if (!confirm('Yakin ingin merestart bot?')) return;
-            
             const btn = document.getElementById('btn-restart');
             btn.disabled = true;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Restarting...';
             addLog('🔄 Merestart bot...', 'info');
             
             try {
-                const response = await fetch('/api/restart', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' }
-                });
+                const response = await fetch('/api/restart', { method: 'POST' });
                 const data = await response.json();
-                
                 if (data.success) {
                     showToast('✅ Restart berhasil!', 'success');
                     addLog('✅ Bot di-restart', 'success');
                     setTimeout(refreshStatus, 2000);
                 } else {
-                    showToast('❌ Restart gagal: ' + (data.error || 'Unknown error'), 'error');
-                    addLog('❌ Restart gagal: ' + (data.error || 'Unknown error'), 'error');
+                    showToast('❌ Restart gagal', 'error');
                 }
             } catch (error) {
                 showToast('❌ Error: ' + error.message, 'error');
-                addLog('❌ Error restart: ' + error.message, 'error');
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = '<i class="fas fa-power-off"></i> Restart Bot';
             }
         }
 
-        // Leave voice channel
         async function leaveVoice() {
-            if (!confirm('Yakin ingin mengeluarkan bot dari voice channel?')) return;
-            
+            if (!confirm('Yakin ingin mengeluarkan bot dari voice?')) return;
             const btn = document.getElementById('btn-leave');
             btn.disabled = true;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Leaving...';
-            addLog('👋 Meninggalkan voice channel...', 'info');
             
             try {
-                const response = await fetch('/api/leave', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' }
-                });
+                const response = await fetch('/api/leave', { method: 'POST' });
                 const data = await response.json();
-                
                 if (data.success) {
-                    showToast('✅ Bot keluar dari voice channel', 'success');
-                    addLog('✅ Bot keluar dari voice channel', 'success');
+                    showToast('✅ Bot keluar dari voice', 'success');
+                    addLog('👋 Bot keluar dari voice', 'success');
                     setTimeout(refreshStatus, 1000);
                 } else {
-                    showToast('❌ Gagal keluar: ' + (data.error || 'Unknown error'), 'error');
-                    addLog('❌ Gagal keluar: ' + (data.error || 'Unknown error'), 'error');
+                    showToast('❌ Gagal keluar', 'error');
                 }
             } catch (error) {
                 showToast('❌ Error: ' + error.message, 'error');
-                addLog('❌ Error leave: ' + error.message, 'error');
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Leave Voice';
             }
         }
 
-        // Refresh status
         async function refreshStatus() {
             try {
                 const response = await fetch('/api/status');
                 const data = await response.json();
-                
                 if (data.success) {
-                    // Update UI dengan data baru
                     location.reload();
-                } else {
-                    addLog('❌ Gagal refresh status', 'error');
                 }
             } catch (error) {
-                console.error('Refresh status error:', error);
-                addLog('❌ Error refresh status: ' + error.message, 'error');
+                console.error('Refresh error:', error);
             }
         }
 
-        // Clear logs
         function clearLogs() {
-            const container = document.getElementById('log-container');
-            if (confirm('Hapus semua log?')) {
-                container.innerHTML = '';
-                logCount = 0;
-                document.getElementById('log-count').textContent = '0 logs';
-                addLog('🗑️ Log dibersihkan', 'info');
-            }
+            if (!confirm('Hapus semua log?')) return;
+            document.getElementById('log-container').innerHTML = '';
+            logCount = 0;
+            addLog('🗑️ Log dibersihkan', 'info');
         }
 
-        // Update time every minute
         function updateTime() {
             const now = new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' });
             document.getElementById('current-time').textContent = now;
         }
         setInterval(updateTime, 60000);
-
-        // Auto refresh status every 30 seconds
-        setInterval(() => {
-            refreshStatus();
-        }, 30000);
-
-        // Initial log
-        setTimeout(() => {
-            addLog('✅ Dashboard siap digunakan', 'success');
-            addLog('📡 Auto-refresh setiap 30 detik', 'info');
-        }, 1000);
+        setInterval(refreshStatus, 30000);
+        setTimeout(() => addLog('✅ Dashboard siap digunakan', 'success'), 1000);
     </script>
 </body>
 </html>

@@ -1,6 +1,8 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
-const { initBot, getStatus } = require('../utils/discord');
+const { initBot, getStatus } = require('../src/discord');
+const routes = require('../src/routes');
 
 const app = express();
 
@@ -11,15 +13,10 @@ app.set('views', path.join(__dirname, '../views'));
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Serve static files
 app.use(express.static(path.join(__dirname, '../public')));
 
-// Import routes
-const webRoutes = require('./web');
-
 // Gunakan routes
-app.use('/', webRoutes);
+app.use('/', routes);
 
 // Health check
 app.get('/health', (req, res) => {
@@ -27,7 +24,8 @@ app.get('/health', (req, res) => {
   res.json({
     status: 'ok',
     botStatus: status,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    environment: 'vercel'
   });
 });
 
@@ -36,13 +34,13 @@ app.get('/', (req, res) => {
   res.redirect('/dashboard');
 });
 
-// Inisialisasi bot saat pertama kali diakses
+// Inisialisasi bot
 let botInitialized = false;
 
 app.use(async (req, res, next) => {
   if (!botInitialized) {
     try {
-      console.log('🤖 Menginisialisasi bot...');
+      console.log('🤖 Menginisialisasi bot di Vercel...');
       await initBot();
       botInitialized = true;
       console.log('✅ Bot berhasil diinisialisasi');
