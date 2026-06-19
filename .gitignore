@@ -1,0 +1,90 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.workspace
+*.iml
+.project
+.classpath
+.settings/
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+.vercel/
+vercel.json
+
+# Cache
+.cache/
+.parcel-cache/
+.npm-cache/
+.eslintcache
+.prettiercache
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Temp files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Misc
+*.pem
+*.key
+*.crt
+*.cert
+*.p12
+
+# Discord bot specific
+bot-session.json
+token.json
+credentials.json
+
+# PM2
+.pm2/
+pm2-*.log
+
+# Vercel specific
+.vercelignore
+.vercel_cache/
+
+# Environment specific
+.env.vercel
+.env.vercel.local
