@@ -1,68 +1,39 @@
 require('dotenv').config();
 const express = require('express');
+const path = require('path');
 const { initBot, reconnectBot, getStatus } = require('../utils/discord');
+const webRoutes = require('./web');
 
 const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Middleware
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Endpoint utama untuk trigger bot
-app.get('/', async (req, res) => {
-  try {
-    const status = getStatus();
-    
-    // Kalau bot belum ready atau tidak connected
-    if (!status.clientReady || !status.isConnected) {
-      console.log('🚀 Bot belum ready, inisialisasi...');
-      await initBot();
-      
-      // Tunggu sebentar
-      await new Promise(resolve => setTimeout(resolve, 3000));
-      
-      const newStatus = getStatus();
-      res.json({
-        success: true,
-        message: 'Bot di-inisialisasi',
-        status: newStatus
-      });
-    } else {
-      res.json({
-        success: true,
-        message: 'Bot sudah aktif',
-        status: status
-      });
-    }
-  } catch (error) {
-    console.error('❌ Error:', error);
-    res.status(500).json({
-      success: false,
-      error: error.message
-    });
-  }
-});
+// Routes
+app.use('/', webRoutes);
 
-// Endpoint untuk reconnect
-app.post('/reconnect', async (req, res) => {
-  try {
-    await reconnectBot();
-    res.json({
-      success: true,
-      message: 'Reconnect berhasil',
-      status: getStatus()
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: error.message
-    });
-  }
-});
-
-// Endpoint status
-app.get('/status', (req, res) => {
+// Health check endpoint
+app.get('/health', (req, res) => {
   res.json({
-    success: true,
-    status: getStatus()
+    status: 'ok',
+    timestamp: new Date().toISOString()
   });
+});
+
+// Start server
+app.listen(PORT, async () => {
+  console.log(`🌐 Web server running on port ${PORT}`);
+  console.log(`📱 Akses: http://localhost:${PORT}`);
+  
+  // Auto-init bot
+  try {
+    await initBot();
+    console.log('🤖 Bot initialized');
+  } catch (error) {
+    console.error('❌ Bot init error:', error);
+  }
 });
 
 module.exports = app;
