@@ -1,11 +1,11 @@
 {
   "name": "discord-bot-vercel",
   "version": "1.0.0",
-  "description": "Discord bot dengan web interface untuk Vercel",
-  "main": "api/bot.js",
+  "description": "Discord bot untuk Vercel",
+  "main": "api/index.js",
   "scripts": {
-    "start": "node api/bot.js",
-    "dev": "nodemon api/bot.js"
+    "start": "node api/index.js",
+    "dev": "nodemon api/index.js"
   },
   "dependencies": {
     "discord.js": "^14.14.1",
